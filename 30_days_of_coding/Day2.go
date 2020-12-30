@@ -3,37 +3,47 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"math"
 	"os"
 	"strconv"
+	"strings"
 )
 
+// Complete the solve function below.
+func solve(mealCost float64, tipPercent int32, taxPercent int32) {
+	result := math.Round(mealCost + float64(tipPercent)*mealCost/100 + float64(taxPercent)*mealCost/100)
+	fmt.Println(result)
+}
+
 func main() {
-	var _ = strconv.Itoa // Ignore this comment. You can still use the package "strconv".
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 
-	var i uint64 = 4
-	var d float64 = 4.0
-	var s string = "HackerRank "
+	mealCost, err := strconv.ParseFloat(readLine(reader), 64)
+	checkError(err)
 
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	localI, _ := strconv.Atoi(scanner.Text())
-	scanner.Scan()
-	localF, _ := strconv.ParseFloat(scanner.Text(), 64)
-	scanner.Scan()
-	localS := scanner.Text()
+	tipPercentTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+	checkError(err)
+	tipPercent := int32(tipPercentTemp)
 
-	fmt.Println(uint64(localI) + i)
-	fmt.Printf("%.1f\n", localF+d)
-	fmt.Println(s + localS)
-	// Declare second integer, double, and String variables.
+	taxPercentTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+	checkError(err)
+	taxPercent := int32(taxPercentTemp)
 
-	// Read and save an integer, double, and String to your variables.
+	solve(mealCost, tipPercent, taxPercent)
+}
 
-	// Print the sum of both integer variables on a new line.
+func readLine(reader *bufio.Reader) string {
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-	// Print the sum of the double variables on a new line.
+	return strings.TrimRight(string(str), "\r\n")
+}
 
-	// Concatenate and print the String variables on a new line
-	// The 's' variable above should be printed first.
-
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
